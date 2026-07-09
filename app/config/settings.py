@@ -5,7 +5,6 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 class AppSettings(BaseModel):
     """Runtime settings for the evaluation engine."""
 
@@ -15,7 +14,7 @@ class AppSettings(BaseModel):
     environment: str = "local"
     log_level: str = "INFO"
     openai_api_key: str | None = None
-    openai_model: str = "gpt-5"
+    openai_model: str = "gpt-4.1"
     request_timeout_seconds: float = Field(default=45, gt=0)
 
 

@@ -51,4 +51,4 @@ def test_quality_evaluator_uses_single_structured_prompt() -> None:
 def test_openai_client_requires_api_key() -> None:
     """OpenAI client refuses to run without an API key."""
     with pytest.raises(EvaluatorConfigurationException, match="OPENAI_API_KEY"):
-        OpenAIQualityClient(api_key=None, model="gpt-5", timeout_seconds=45)
+        OpenAIQualityClient(api_key=None, model="gpt-4.1", timeout_seconds=45)

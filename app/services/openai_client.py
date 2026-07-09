@@ -3,7 +3,7 @@
 import json
 from typing import Any
 
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from app.schemas import QualityEvaluationReport
 from app.sdk import EvaluationException, EvaluatorConfigurationException
@@ -38,7 +38,7 @@ class OpenAIQualityClient:
                         "type": "json_schema",
                         "name": "quality_evaluation_report",
                         "strict": True,
-                        "schema": build_strict_json_schema(QualityEvaluationReport),
+                        "schema": QualityEvaluationReport.model_json_schema(),
                     }
                 },
             )
@@ -51,7 +51,9 @@ class OpenAIQualityClient:
                 "OpenAI returned an invalid quality evaluation payload"
             ) from exc
         except Exception as exc:
-            raise EvaluationException("OpenAI quality evaluation request failed") from exc
+            raise EvaluationException(
+                f"OpenAI quality evaluation request failed: {type(exc).__name__}: {exc}"
+            ) from exc
 
     def _extract_output_text(self, response: Any) -> str:
         """Extract text from a Responses API response when output_text is unavailable."""
@@ -67,22 +69,3 @@ class OpenAIQualityClient:
         text = "".join(chunks)
         json.loads(text)
         return text
-
-
-def build_strict_json_schema(model: type[BaseModel]) -> dict[str, Any]:
-    """Build an OpenAI-compatible strict JSON schema for a Pydantic model."""
-    schema = model.model_json_schema()
-    _require_no_additional_properties(schema)
-    return schema
-
-
-def _require_no_additional_properties(schema_fragment: Any) -> None:
-    """Recursively set additionalProperties=false on every object schema."""
-    if isinstance(schema_fragment, dict):
-        if schema_fragment.get("type") == "object" or "properties" in schema_fragment:
-            schema_fragment["additionalProperties"] = False
-        for value in schema_fragment.values():
-            _require_no_additional_properties(value)
-    elif isinstance(schema_fragment, list):
-        for item in schema_fragment:
-            _require_no_additional_properties(item)
