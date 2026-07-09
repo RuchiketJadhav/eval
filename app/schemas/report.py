@@ -72,3 +72,8 @@ class CompositeReport(BaseModel):
     def to_dict(self) -> dict[str, Any]:
         """Serialize the report to a dictionary."""
         return self.model_dump(mode="json")
+        return cast(str, self.model_dump_json())
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize the report to a dictionary."""
+        return cast(dict[str, Any], self.model_dump(mode="json"))

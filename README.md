@@ -22,16 +22,15 @@ A polished MVP for evaluating completed AI voice-agent conversations. Users past
 
 ```bash
 uv sync
-cat > .env <<EOF
-OPENAI_API_KEY=your-api-key
-EOF
+
+export OPENAI_API_KEY="your-api-key"
 ```
 
 Optional configuration:
 
 ```bash
-OPENAI_MODEL=gpt-5
-REQUEST_TIMEOUT_SECONDS=45
+export OPENAI_MODEL="gpt-5.5"
+export REQUEST_TIMEOUT_SECONDS="45"
 ```
 
 ## Run the app

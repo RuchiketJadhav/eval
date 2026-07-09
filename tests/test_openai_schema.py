@@ -2,38 +2,18 @@
 
 from typing import Any
 
-from app.services.openai_client import QUALITY_EVALUATION_JSON_SCHEMA
+from app.schemas import QualityEvaluationReport
+from app.services.openai_client import build_strict_json_schema
 
 
 def test_quality_report_schema_disallows_additional_properties_on_all_objects() -> None:
     """Every object in the Responses API schema sets additionalProperties=false."""
-    object_schemas = _collect_object_schemas(QUALITY_EVALUATION_JSON_SCHEMA)
+    schema = build_strict_json_schema(QualityEvaluationReport)
+
+    object_schemas = _collect_object_schemas(schema)
 
     assert object_schemas
     assert all(fragment.get("additionalProperties") is False for fragment in object_schemas)
-
-
-def test_quality_report_schema_uses_expected_hand_written_shape() -> None:
-    """The Responses API schema exposes the exact quality report fields."""
-    assert set(QUALITY_EVALUATION_JSON_SCHEMA["properties"]) == {
-        "overall_score",
-        "intent_score",
-        "response_score",
-        "context_score",
-        "flow_score",
-        "completion_score",
-        "summary",
-        "strengths",
-        "weaknesses",
-        "issues",
-        "recommendations",
-    }
-    assert QUALITY_EVALUATION_JSON_SCHEMA["properties"]["issues"]["items"] == {
-        "$ref": "#/$defs/issue"
-    }
-    assert QUALITY_EVALUATION_JSON_SCHEMA["properties"]["recommendations"]["items"] == {
-        "$ref": "#/$defs/recommendation"
-    }
 
 
 def _collect_object_schemas(schema_fragment: Any) -> list[dict[str, Any]]:

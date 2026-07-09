@@ -8,66 +8,6 @@ from pydantic import ValidationError
 from app.schemas import QualityEvaluationReport
 from app.sdk import EvaluationException, EvaluatorConfigurationException
 
-QUALITY_EVALUATION_JSON_SCHEMA: dict[str, Any] = {
-    "type": "object",
-    "additionalProperties": False,
-    "properties": {
-        "overall_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "intent_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "response_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "context_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "flow_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "completion_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "summary": {"type": "string"},
-        "strengths": {"type": "array", "items": {"type": "string"}},
-        "weaknesses": {"type": "array", "items": {"type": "string"}},
-        "issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
-        "recommendations": {
-            "type": "array",
-            "items": {"$ref": "#/$defs/recommendation"},
-        },
-    },
-    "required": [
-        "overall_score",
-        "intent_score",
-        "response_score",
-        "context_score",
-        "flow_score",
-        "completion_score",
-        "summary",
-        "strengths",
-        "weaknesses",
-        "issues",
-        "recommendations",
-    ],
-    "$defs": {
-        "issue": {
-            "type": "object",
-            "additionalProperties": False,
-            "properties": {
-                "severity": {
-                    "type": "string",
-                    "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
-                },
-                "title": {"type": "string"},
-                "description": {"type": "string"},
-                "evidence": {"type": "string"},
-            },
-            "required": ["severity", "title", "description", "evidence"],
-        },
-        "recommendation": {
-            "type": "object",
-            "additionalProperties": False,
-            "properties": {
-                "priority": {"type": "string", "enum": ["HIGH", "MEDIUM", "LOW"]},
-                "title": {"type": "string"},
-                "description": {"type": "string"},
-            },
-            "required": ["priority", "title", "description"],
-        },
-    },
-}
-
 
 class OpenAIQualityClient:
     """Client that evaluates transcripts with one OpenAI Responses API call."""
@@ -98,7 +38,7 @@ class OpenAIQualityClient:
                         "type": "json_schema",
                         "name": "quality_evaluation_report",
                         "strict": True,
-                        "schema": QUALITY_EVALUATION_JSON_SCHEMA,
+                        "schema": QualityEvaluationReport.model_json_schema(),
                     }
                 },
             )
@@ -111,7 +51,9 @@ class OpenAIQualityClient:
                 "OpenAI returned an invalid quality evaluation payload"
             ) from exc
         except Exception as exc:
-            raise EvaluationException("OpenAI quality evaluation request failed") from exc
+            raise EvaluationException(
+                f"OpenAI quality evaluation request failed: {type(exc).__name__}: {exc}"
+            ) from exc
 
     def _extract_output_text(self, response: Any) -> str:
         """Extract text from a Responses API response when output_text is unavailable."""
