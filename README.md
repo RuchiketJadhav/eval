@@ -1,8 +1,16 @@
 # AI Voice Evaluation Platform
 
-A production-oriented evaluation engine for completed AI voice-agent conversations.
+A polished MVP for evaluating completed AI voice-agent conversations. Users paste a transcript, click **Evaluate**, and receive an enterprise-style Quality Evaluation report powered by a single OpenAI Responses API call with Structured Outputs.
 
-This repository currently contains Sprint 1 — PR1 project foundation only. It provides the Python project configuration, a minimal FastAPI application, structured logging setup, and baseline test/lint/type-check tooling. Business logic and evaluators are intentionally not implemented in this PR.
+## Features
+
+- FastAPI web application
+- Jinja2 templates with TailwindCSS CDN styling
+- Quality Evaluator only
+- Scores for intent understanding, response correctness, context retention, conversation flow, and task completion
+- Evidence-backed issues and prioritized recommendations
+- JSON download and browser print support
+- Pydantic v2 schemas, evaluator SDK, registry infrastructure, ruff, mypy, and pytest
 
 ## Requirements
 
@@ -39,7 +47,7 @@ uv sync
 uv run uvicorn app.main:app --reload
 ```
 
-The health endpoint is available at `http://127.0.0.1:8000/health`.
+Open `http://127.0.0.1:8000`, paste a transcript, and click **Evaluate**.
 
 ## Quality checks
 

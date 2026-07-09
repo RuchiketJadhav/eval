@@ -329,10 +329,6 @@ def test_enum_validation() -> None:
         ConversationTurn(
             turn_id="turn-1",
             speaker=customer_speaker,
-    assert (
-        ConversationTurn(
-            turn_id="turn-1",
-            speaker="customer",
             timestamp=_timestamp(1),
             text="Hello",
         ).speaker
@@ -343,7 +339,6 @@ def test_enum_validation() -> None:
         ConversationTurn(
             turn_id="turn-1",
             speaker=invalid_speaker,
-            speaker="supervisor",
             timestamp=_timestamp(1),
             text="Hello",
         )
