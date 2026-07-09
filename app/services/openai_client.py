@@ -50,9 +50,9 @@ class OpenAIQualityClient:
             raise EvaluationException(
                 "OpenAI returned an invalid quality evaluation payload"
             ) from exc
-       except Exception as exc:
+        except Exception as exc:
             raise EvaluationException(
-        f"OpenAI quality evaluation request failed: {type(exc).__name__}: {exc}"
+                f"OpenAI quality evaluation request failed: {type(exc).__name__}: {exc}"
             ) from exc
 
     def _extract_output_text(self, response: Any) -> str:
