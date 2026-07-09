@@ -33,14 +33,6 @@ class OpenAIQualityClient:
             response = await self._client.responses.create(
                 model=self._model,
                 input=prompt,
-                text={
-                    "format": {
-                        "type": "json_schema",
-                        "name": "quality_evaluation_report",
-                        "strict": True,
-                        "schema": QualityEvaluationReport.model_json_schema(),
-                    }
-                },
             )
             raw_json = getattr(response, "output_text", None)
             if not isinstance(raw_json, str) or not raw_json.strip():
