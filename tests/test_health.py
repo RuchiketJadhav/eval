@@ -10,9 +10,9 @@ def test_create_app_configures_health_route() -> None:
     """The application factory registers the health-check route."""
     app = create_app()
 
-    schema = app.openapi()
+    paths = {route.path for route in app.routes}
 
-    assert "/health" in schema["paths"]
+    assert "/health" in paths
 
 
 def test_health_check_returns_ok() -> None:

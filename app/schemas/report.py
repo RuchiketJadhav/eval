@@ -2,6 +2,7 @@
 
 from datetime import UTC, datetime
 from typing import Any
+from typing import Any, cast
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
 
@@ -72,3 +73,8 @@ class CompositeReport(BaseModel):
     def to_dict(self) -> dict[str, Any]:
         """Serialize the report to a dictionary."""
         return self.model_dump(mode="json")
+        return cast(str, self.model_dump_json())
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize the report to a dictionary."""
+        return cast(dict[str, Any], self.model_dump(mode="json"))
