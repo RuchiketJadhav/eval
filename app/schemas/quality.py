@@ -25,7 +25,7 @@ class RecommendationPriority(StrEnum):
 class QualityIssue(BaseModel):
     """Issue identified during quality evaluation."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(frozen=True, extra="forbid")
 
     severity: QualityIssueSeverity
     title: str
@@ -36,7 +36,7 @@ class QualityIssue(BaseModel):
 class QualityRecommendation(BaseModel):
     """Recommendation identified during quality evaluation."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(frozen=True, extra="forbid")
 
     priority: RecommendationPriority
     title: str
@@ -46,7 +46,7 @@ class QualityRecommendation(BaseModel):
 class QualityEvaluationReport(BaseModel):
     """Structured JSON object returned by the Quality Evaluator."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(frozen=True, extra="forbid")
 
     overall_score: float = Field(ge=0, le=100)
     intent_score: float = Field(ge=0, le=100)
