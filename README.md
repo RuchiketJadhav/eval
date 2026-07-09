@@ -22,6 +22,7 @@ A polished MVP for evaluating completed AI voice-agent conversations. Users past
 
 ```bash
 uv sync
+
 export OPENAI_API_KEY="your-api-key"
 ```
 
