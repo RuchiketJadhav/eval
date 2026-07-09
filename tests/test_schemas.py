@@ -2,6 +2,7 @@
 
 import json
 from datetime import UTC, datetime, timedelta
+from typing import Any
 
 import pytest
 from app.schemas import (
@@ -321,6 +322,13 @@ def test_conversation_json_export_includes_computed_fields() -> None:
 
 def test_enum_validation() -> None:
     """Enums validate known values and reject unknown values."""
+    customer_speaker: Any = "customer"
+    invalid_speaker: Any = "supervisor"
+
+    assert (
+        ConversationTurn(
+            turn_id="turn-1",
+            speaker=customer_speaker,
     assert (
         ConversationTurn(
             turn_id="turn-1",
@@ -334,6 +342,7 @@ def test_enum_validation() -> None:
     with pytest.raises(ValidationError):
         ConversationTurn(
             turn_id="turn-1",
+            speaker=invalid_speaker,
             speaker="supervisor",
             timestamp=_timestamp(1),
             text="Hello",
