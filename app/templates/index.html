@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Voice Evaluation Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-white">
+    <main class="mx-auto max-w-6xl px-6 py-10">
+      <nav class="mb-12 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="grid h-11 w-11 place-items-center rounded-2xl bg-cyan-400 text-2xl">◉</div>
+          <div>
+            <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">Voice QA</p>
+            <h1 class="text-xl font-semibold">Evaluation Platform</h1>
+          </div>
+        </div>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300">Quality MVP</span>
+      </nav>
+
+      <section class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div>
+          <div class="mb-5 inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm text-cyan-200">Enterprise AI call evaluation in one click</div>
+          <h2 class="text-5xl font-bold tracking-tight md:text-6xl">Turn voice transcripts into polished QA reports.</h2>
+          <p class="mt-6 text-lg leading-8 text-slate-300">Paste an AI voice conversation and receive objective scores for intent understanding, response correctness, context retention, flow, and task completion.</p>
+          <div class="mt-8 grid gap-3 text-sm text-slate-300 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Structured JSON</div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">✓ Evidence-backed issues</div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">✓ SaaS-ready report</div>
+          </div>
+        </div>
+
+        <form id="evaluate-form" action="/evaluate" method="post" class="rounded-3xl border border-white/10 bg-white p-2 shadow-2xl shadow-cyan-950/50">
+          <div class="rounded-[1.35rem] bg-slate-50 p-6 text-slate-950">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <div>
+                <h3 class="text-xl font-semibold">Conversation transcript</h3>
+                <p class="text-sm text-slate-500">Speaker labels improve report quality.</p>
+              </div>
+              <button type="button" id="sample-button" class="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">Use sample</button>
+            </div>
+            {% if error %}
+              <div class="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{{ error }}</div>
+            {% endif %}
+            <textarea id="transcript" name="transcript" rows="14" required class="w-full rounded-2xl border border-slate-200 bg-white p-4 font-mono text-sm leading-6 outline-none ring-cyan-400 transition focus:ring-4" placeholder="Customer: ...&#10;AI Agent: ...">{{ transcript | default('', true) }}</textarea>
+            <input type="hidden" id="sample-transcript" value="{{ sample_transcript }}" />
+            <button id="evaluate-button" type="submit" class="mt-5 flex w-full items-center justify-center gap-3 rounded-2xl bg-cyan-500 px-6 py-4 text-base font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-70">
+              <span id="button-icon">✨</span>
+              <span id="button-text">Evaluate</span>
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById('evaluate-form');
+      const button = document.getElementById('evaluate-button');
+      const buttonText = document.getElementById('button-text');
+      const buttonIcon = document.getElementById('button-icon');
+      const transcript = document.getElementById('transcript');
+      document.getElementById('sample-button').addEventListener('click', () => {
+        transcript.value = document.getElementById('sample-transcript').value;
+        transcript.focus();
+      });
+      form.addEventListener('submit', (event) => {
+        if (!transcript.value.trim()) {
+          event.preventDefault();
+          transcript.focus();
+          return;
+        }
+        button.disabled = true;
+        buttonIcon.textContent = '⏳';
+        buttonText.textContent = 'Evaluating transcript...';
+      });
+    </script>
+  </body>
+</html>
