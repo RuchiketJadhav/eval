@@ -2,7 +2,6 @@
 
 from datetime import UTC, datetime
 from typing import Any
-from typing import Any, cast
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
 

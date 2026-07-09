@@ -16,32 +16,23 @@ A polished MVP for evaluating completed AI voice-agent conversations. Users past
 
 - Python 3.12
 - [uv](https://docs.astral.sh/uv/)
-
-## Project layout
-
-```text
-app/
-  api/
-  core/
-  sdk/
-  schemas/
-  registry/
-  orchestrator/
-  evaluators/
-  reports/
-  utils/
-  config/
-tests/
-docs/
-```
+- `OPENAI_API_KEY`
 
 ## Setup
 
 ```bash
 uv sync
+export OPENAI_API_KEY="your-api-key"
 ```
 
-## Run the API
+Optional configuration:
+
+```bash
+export OPENAI_MODEL="gpt-5.5"
+export REQUEST_TIMEOUT_SECONDS="45"
+```
+
+## Run the app
 
 ```bash
 uv run uvicorn app.main:app --reload
@@ -61,4 +52,22 @@ uv run mypy
 
 ```bash
 docker compose up --build
+```
+
+## Project layout
+
+```text
+app/
+  api/
+  config/
+  core/
+  evaluators/
+  registry/
+  schemas/
+  sdk/
+  services/
+  templates/
+  utils/
+tests/
+docs/
 ```
