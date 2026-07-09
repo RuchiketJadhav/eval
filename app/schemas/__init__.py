@@ -40,6 +40,8 @@ __all__ = [
     "QualityRecommendation",
     "Recommendation",
     "RecommendationPriority",
+    "Recommendation",
+    "RecommendationPriority",
     "RecommendationType",
     "SpeakerType",
 ]

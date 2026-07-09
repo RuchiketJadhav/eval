@@ -1,9 +1,9 @@
 """Application settings."""
 
 import os
+from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
-
 
 class AppSettings(BaseModel):
     """Runtime settings for the evaluation engine."""
@@ -14,7 +14,7 @@ class AppSettings(BaseModel):
     environment: str = "local"
     log_level: str = "INFO"
     openai_api_key: str | None = None
-    openai_model: str = "gpt-5.5"
+    openai_model: str = "gpt-4.1"
     request_timeout_seconds: float = Field(default=45, gt=0)
 
 
@@ -25,6 +25,6 @@ def get_settings() -> AppSettings:
         environment=os.getenv("APP_ENV", "local"),
         log_level=os.getenv("LOG_LEVEL", "INFO"),
         openai_api_key=os.getenv("OPENAI_API_KEY"),
-        openai_model=os.getenv("OPENAI_MODEL", "gpt-5.5"),
+        openai_model=os.getenv("OPENAI_MODEL", "gpt-4.1"),
         request_timeout_seconds=float(os.getenv("REQUEST_TIMEOUT_SECONDS", "45")),
     )
