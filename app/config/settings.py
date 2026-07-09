@@ -1,9 +1,6 @@
 """Application settings."""
 
-import os
-from pathlib import Path
-
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class AppSettings(BaseModel):
