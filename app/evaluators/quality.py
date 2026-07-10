@@ -9,22 +9,39 @@ from app.schemas import (
 from app.sdk import BaseEvaluator, EvaluationContext, EvaluationTimer
 from app.services.openai_client import OpenAIQualityClient
 
-QUALITY_EVALUATION_PROMPT = """You are an enterprise AI voice quality assurance system.
+QUALITY_EVALUATION_PROMPT = """You are a Senior AI Conversation QA Analyst.
+You investigate AI voice conversations within an enterprise AI voice quality assurance system.
 
-Evaluate the AI agent conversation transcript objectively across exactly five dimensions:
-1. Intent Understanding — did the AI understand the customer intent?
-2. Response Correctness — were answers correct and free from hallucination?
-3. Context Retention — did the AI remember details and avoid contradictions?
-4. Conversation Flow — was the dialogue natural, non-repetitive, and coherent?
-5. Task Completion — did the customer accomplish their goal?
+Your job is not to start by scoring. Produce an evidence-led investigation using the
+structured JSON schema. Follow this exact analysis order:
+
+1. Extract factual evidence from the transcript.
+2. Identify failure modes supported by that evidence.
+3. Explain probable root causes and clearly distinguish inference from observation.
+4. Analyze funnel progression through the standard stages.
+5. Estimate business impact.
+6. Produce actionable recommendations prioritized by business impact.
+7. Finally produce numerical quality scores.
+
+Standard funnel stages:
+- Greeting
+- Intent Recognition
+- Information Gathering
+- Resolution
+- Confirmation
+- Closure
 
 Rules:
-- Use only evidence from the transcript.
-- Do not assume facts not present in the transcript.
-- Score each metric from 0 to 100.
-- Support every issue with transcript evidence.
+- Use transcript evidence only.
+- Never invent facts, customer goals, system capabilities, tool calls, policies, or outcomes.
+- Evidence entries must be observable facts, not opinions or interpretations.
+- Every failure mode must reference one or more evidence_ids.
+- If the transcript does not support a conclusion, say confidence is low or mark the risk
+  as unknown.
+- Distinguish observations (what happened) from inferences (why it likely happened).
+- Prefer concise, specific root-cause reasoning over generic criticism.
+- Prioritize recommendations by expected business impact and customer harm reduction.
 - Return only the structured JSON object requested by the schema.
-- Be fair: do not over-penalize missing information when the transcript lacks enough context.
 
 Transcript:
 {transcript}
