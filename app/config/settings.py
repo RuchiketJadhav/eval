@@ -5,6 +5,7 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
+
 class AppSettings(BaseModel):
     """Runtime settings for the evaluation engine."""
 
