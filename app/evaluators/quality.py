@@ -31,6 +31,13 @@ Standard funnel stages:
 - Confirmation
 - Closure
 
+Quality score rules:
+- quality_scores.overall, intent, response, context, flow, and completion MUST each use a 0 to 100 scale.
+- 0 means complete failure and 100 means excellent performance.
+- Do NOT use a 0 to 1 scale for quality_scores.
+- Use the full 0 to 100 range and assign scores that reflect the severity of transcript evidence.
+- Confidence fields are different: confidence MUST remain on a 0 to 1 scale.
+
 Rules:
 - Use transcript evidence only.
 - Never invent facts, customer goals, system capabilities, tool calls, policies, or outcomes.
